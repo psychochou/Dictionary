@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.*;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -38,7 +41,7 @@ public class MainActivity extends Activity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        //    getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         initialize();
     }
 
@@ -50,8 +53,8 @@ public class MainActivity extends Activity {
         mEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    new QueryTask(MainActivity.this).execute(mEditText.getText().toString().trim());
+                if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
+                    new QueryTask(MainActivity.this).execute(mEditText.getText().toString().trim().toLowerCase());
                 }
                 return false;
             }
@@ -71,7 +74,6 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add(0, 0, 0, "x");
         menu.add(0, MENE_REQUEST_FLOATING_PERMISSION, 0, "开启悬浮窗口权限");
         return super.onCreateOptionsMenu(menu);
     }
@@ -79,9 +81,6 @@ public class MainActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case 0:
-                new QueryTask(this).execute("我");
-                return true;
             case MENE_REQUEST_FLOATING_PERMISSION:
                 requestAlertPermission();
                 return true;

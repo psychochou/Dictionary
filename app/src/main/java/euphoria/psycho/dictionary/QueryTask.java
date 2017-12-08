@@ -43,6 +43,7 @@ public class QueryTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
+        Log.e("13","123");
 
         mFloatingView = new FloatingView(mContext);
     }

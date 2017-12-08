@@ -10,6 +10,7 @@ import android.os.IBinder;
 public class ClipboardService extends Service {
     private static final int ID_FOREGROUND = 0x1;
 
+    private String mWord = null;
     private ClipboardManager mClipboardManager;
     private final ClipboardManager.OnPrimaryClipChangedListener mOnPrimaryClipChangedListener = new ClipboardManager.OnPrimaryClipChangedListener() {
         @Override
@@ -20,9 +21,13 @@ public class ClipboardService extends Service {
             }
             ClipData clipData = mClipboardManager.getPrimaryClip();
             if (clipData.getItemCount() < 1) return;
-            String word = clipData.getItemAt(0).getText().toString();
+            CharSequence charSequence = clipData.getItemAt(0).getText();
+            if (charSequence == null) return;
+            String word = charSequence.toString();
+            if (word.equals(mWord)) return;
+            else mWord = word;
 
-            new QueryTask(getApplicationContext()).execute(word);
+            new QueryTask(getApplicationContext()).execute(word.split("\\s+")[0].toLowerCase());
         }
     };
 

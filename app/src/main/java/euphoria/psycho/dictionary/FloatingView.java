@@ -3,6 +3,7 @@ package euphoria.psycho.dictionary;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.util.Log;
 import android.view.*;
 import android.widget.TextView;
 
